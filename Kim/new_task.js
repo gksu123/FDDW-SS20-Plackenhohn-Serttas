@@ -6,7 +6,7 @@ var amqp = require('amqplib/callback_api');
 
 
 
-amqp.connect('amqp://wfcotqhq:OXIBwoEG8g8s27WbaKgdXswuCBzr7FTf@squid.rmq.cloudamqp.com/wfcotqhq', function(error0, connection) {
+amqp.connect('amqp://localhost', function(error0, connection) {
 
     if (error0) {
 
@@ -22,25 +22,25 @@ amqp.connect('amqp://wfcotqhq:OXIBwoEG8g8s27WbaKgdXswuCBzr7FTf@squid.rmq.cloudam
 
         }
 
+        var queue = 'task_queue';
 
-
-        var queue = 'hello';
-
-        var msg = 'Hello World!';
+        var msg = process.argv.slice(2).join(' ') || "Hello World!";
 
 
 
         channel.assertQueue(queue, {
 
-            durable: false
+            durable: true
 
         });
 
-        channel.sendToQueue(queue, Buffer.from(msg));
+        channel.sendToQueue(queue, Buffer.from(msg), {
 
+            persistent: true
 
+        });
 
-        console.log(" [x] Sent %s", msg);
+        console.log(" [x] Sent '%s'", msg);
 
     });
 

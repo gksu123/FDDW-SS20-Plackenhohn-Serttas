@@ -20,7 +20,7 @@ if (args.length == 0) {
 
 
 
-amqp.connect('amqp://localhost', function(error0, connection) {
+amqp.connect('amqp://wfcotqhq:OXIBwoEG8g8s27WbaKgdXswuCBzr7FTf@squid.rmq.cloudamqp.com/wfcotqhq', function(error0, connection) {
 
     if (error0) {
 

@@ -6,7 +6,7 @@ var amqp = require('amqplib/callback_api');
 
 
 
-amqp.connect('amqp://localhost', function(error, connection) {
+amqp.connect('amqp://wfcotqhq:OXIBwoEG8g8s27WbaKgdXswuCBzr7FTf@squid.rmq.cloudamqp.com/wfcotqhq', function(error, connection) {
 
     connection.createChannel(function(error, channel) {
 

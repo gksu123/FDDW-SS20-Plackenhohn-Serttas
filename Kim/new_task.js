@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+
+
 var amqp = require('amqplib/callback_api');
 
 
@@ -20,34 +22,34 @@ amqp.connect('amqp://wfcotqhq:OXIBwoEG8g8s27WbaKgdXswuCBzr7FTf@squid.rmq.cloudam
 
         }
 
+        var queue = 'task_queue';
 
-
-        var queue = 'hello';
+        var msg = process.argv.slice(2).join(' ') || "Hello World!";
 
 
 
         channel.assertQueue(queue, {
 
-            durable: false
+            durable: true
 
         });
 
+        channel.sendToQueue(queue, Buffer.from(msg), {
 
-
-        console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queue);
-
-
-
-        channel.consume(queue, function(msg) {
-
-            console.log(" [x] Received %s", msg.content.toString());
-
-        }, {
-
-            noAck: true
+            persistent: true
 
         });
+
+        console.log(" [x] Sent '%s'", msg);
 
     });
+
+    setTimeout(function() {
+
+        connection.close();
+
+        process.exit(0);
+
+    }, 500);
 
 });

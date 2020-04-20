@@ -22,27 +22,29 @@ amqp.connect('amqp://wfcotqhq:OXIBwoEG8g8s27WbaKgdXswuCBzr7FTf@squid.rmq.cloudam
 
         }
 
+        var exchange = 'topic_logs';
+
+        var args = process.argv.slice(2);
+
+        var key = (args.length > 0) ? args[0] : 'anonymous.info';
+
+        var msg = args.slice(1).join(' ') || 'Hello World!';
 
 
-        var queue = 'hello';
 
-        var msg = 'Hello World!';
-
-
-
-        channel.assertQueue(queue, {
+        channel.assertExchange(exchange, 'topic', {
 
             durable: false
 
         });
 
-        channel.sendToQueue(queue, Buffer.from(msg));
+        channel.publish(exchange, key, Buffer.from(msg));
 
-
-
-        console.log(" [x] Sent %s", msg);
+        console.log(" [x] Sent %s: '%s'", key, msg);
 
     });
+
+
 
     setTimeout(function() {
 

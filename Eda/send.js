@@ -19,7 +19,7 @@ amqp.connect('amqp://urqhfjsh:De4vJ6bu15evWfugZUfdgi2nxrVvUSun@kangaroo.rmq.clou
         });
         channel.sendToQueue(queue, Buffer.from(msg));
 
-        console.log(" [x] Sent %s", msg);
+        console.log(" [x] Send %s", msg);
     });
     setTimeout(function() {
         connection.close();

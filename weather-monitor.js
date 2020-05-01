@@ -5,11 +5,11 @@ var amqp = require('amqplib/callback_api');
 
 //let apiKey = '09d42d940cc979f914409599ef6b7251';
   
-let cities= []
-getcities()
+let city = []
+getcity()
 sendWeather()
 
-function getcities() {
+function getcity() {
   amqp.connect('amqp://urqhfjsh:De4vJ6bu15evWfugZUfdgi2nxrVvUSun@kangaroo.rmq.cloudamqp.com/urqhfjsh', function(error0, connection) {
   
       if (error0) {
@@ -19,7 +19,7 @@ function getcities() {
         if (error1) {
           throw error1;
         }
-        var exchange = 'cities';
+        var exchange = 'city';
 
         channel.assertExchange(exchange, 'fanout' , {
           durable: false
@@ -36,7 +36,7 @@ function getcities() {
 
           channel.consume(q.queue, function(msg) {
             if (msg.content) {
-              cities.push(msg.content.toString())
+              city.push(msg.content.toString())
             }
           },{
             noAck: true
@@ -68,20 +68,20 @@ function sendWeather() {
 
       setInterval(() => {
         async function getWeather() {
-          if(cities.length == 0) {
-            console.log( '[weather] waiting...')
+          if(city.length == 0) {
+            console.log( 'waiting for data...')
           }
           else{
             console.log('')
-            for(ans of cities) {
+            for(ans of city) {
             await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${ans}&units=imperial&appid=09d42d940cc979f914409599ef6b7251`, {
               'method' : 'GET' , })
               .then(data => {
                 return data.text()
               })
               .then(text => {
-                channel.publish(exchange, '' + ans.toLowerCase(), Buffer.from(text));
-                console.log("[weather] sent weather-monitor-data from " + ans );
+                channel.publish(exchange, ans, Buffer.from(text));
+                console.log("[#] Sent weather data for " + ans );
                 console.log("");
               })
             }
@@ -101,7 +101,7 @@ function sendWeather() {
         channel.bindQueue(q.queue, exchange, '#');
   
           channel.consume(q.queue, function(msg) {
-            console.log("[x] Get data");
+            console.log("[x] Get");
   
             senddata(msg.fields.routingKey, msg.content.toString(), channel, exchange1)
           },{
@@ -113,7 +113,7 @@ function sendWeather() {
 
     function senddata(key, content, channel, exchange){
       channel.publish(exchange, key, Buffer.from(content));
-      console.log("[x] Sent data");
+      console.log("[x] Sent");
       console.log("");
     }
   }

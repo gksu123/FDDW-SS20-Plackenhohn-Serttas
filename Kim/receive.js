@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+
 var amqp = require('amqplib/callback_api');
 
 
@@ -38,9 +39,9 @@ amqp.connect('amqp://wfcotqhq:OXIBwoEG8g8s27WbaKgdXswuCBzr7FTf@squid.rmq.cloudam
 
 
 
-        channel.consume(queue, function(msg) {
+        channel.consume(queue, function(body) {
 
-            console.log(" [x] Received %s", msg.content.toString());
+            console.log(" [x] Received %s", body.content.toString());
 
         }, {
 

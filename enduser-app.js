@@ -15,7 +15,7 @@ amqp.connect('amqp://urqhfjsh:De4vJ6bu15evWfugZUfdgi2nxrVvUSun@kangaroo.rmq.clou
         if (error1) {
             throw error1;
         }
-        var exchange = 'cities';
+        var exchange = 'city';
 
         channel.assertExchange(exchange, 'fanout', {
             durable: false

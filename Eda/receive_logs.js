@@ -16,6 +16,11 @@ amqp.connect('amqp://urqhfjsh:De4vJ6bu15evWfugZUfdgi2nxrVvUSun@kangaroo.rmq.clou
             durable: false
         });
 
+        let exchange1='data_combine';
+        channel.assertExchange(exchange, 'topic', {
+        durable : false
+        });
+
         channel.assertQueue('', {
             exclusive: true
         }, function(error2, q) {
@@ -23,15 +28,21 @@ amqp.connect('amqp://urqhfjsh:De4vJ6bu15evWfugZUfdgi2nxrVvUSun@kangaroo.rmq.clou
                 throw error2;
             }
             console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", q.queue);
-            channel.bindQueue(q.queue, exchange, '');
+            channel.bindQueue(q.queue, exchange, '#');
 
             channel.consume(q.queue, function(msg) {
                 if (msg.content) {
                     console.log(" [x] %s", msg.content.toString());
+                    senddata(msg.fields.routingKey, msg.content.toString(), channel, exchange1)
                 }
             }, {
                 noAck: true
             });
         });
     });
+    function senddata(key, content, channel, exchange){
+        channel.publish(exchange, key, Buffer.from(content));
+        console.log("[x] Sent data");
+        console.log("");
+      }
 });

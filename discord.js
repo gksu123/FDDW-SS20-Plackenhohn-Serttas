@@ -1,21 +1,29 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const token = "NzA1NzAwMDk5NzExMzAzNjgx.XqwTAw.UBYX0z4c9fHVgGdh1uAFRbKyOic";
+const token = "NzA1NzkzMjczOTU2MDA4MDA3.Xqw3Xw.onql5MIAD0RyxoGZSSrJzGu0eb4";
 
 client.login(token);
 
+client.on("message", message => {
+  message.channel.send("Hallo");
+});
 
 client.on('ready', () => {
   var testChannel = client.channels.cache.find(channel => channel.id === '705755327970279425');
 
-  console.log("The bot is logged in.")
-
-  setInterval(() => {
-    testChannel.send("Hallo! Das ist eine Message die im Intervall sendet.");
-  }, 5000);
+  console.log("The bot is logged in.");
 });
 
-client.on('message', message => {
+  client.on('message', testChannel => {
+    
+//   setInterval(() => {
+    testChannel.channel.send("Hallo! Das ist eine Message die im Intervall sendet.");
+//   process.exit();
+//  }, 3000);
+});
+
+
+/*client.on('message', message => {
 
   if (message.author.bot) return;
 
@@ -40,7 +48,7 @@ client.on('message', message => {
       if(message.content.toLowerCase() === 'hallo')
       {
         message.author.send("Hey!");
-        message.channel.send("Hey!" + message.author);
+        message.channel.send("Hey!" + 'Kim_Uni');
       }
     }
   });
@@ -50,4 +58,4 @@ client.on('message', message => {
     return message.content.toLowerCase().startsWith("?" + commandName);
   }
 
-
+*/

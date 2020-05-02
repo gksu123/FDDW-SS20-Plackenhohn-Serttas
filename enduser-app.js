@@ -9,8 +9,8 @@ const rl = readline.createInterface({
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const token = 'NzA1ODU1ODEyNDI1NDgyMzIx.Xq2cGQ.LzTPV41sAzAq-DZNsTQF_xxxxx'
-// neuer Token NzA1ODU1ODEyNDI1NDgyMzIx.Xq2cGQ.LzTPV41sAzAq-DZNsTQF_SrurVk
+const token = 'NzA2MTc5MDMxNzkxNDM1ODQ4.Xq2ejQ.rfYaYwHCvO_**********'
+// token Ende c7jr8sfQZyJAIFI8
 
 
 amqp.connect('amqp://urqhfjsh:De4vJ6bu15evWfugZUfdgi2nxrVvUSun@kangaroo.rmq.cloudamqp.com/urqhfjsh', function(error0, connection) {
@@ -28,29 +28,25 @@ amqp.connect('amqp://urqhfjsh:De4vJ6bu15evWfugZUfdgi2nxrVvUSun@kangaroo.rmq.clou
         });
 
     
- /*       rl.question('Bitte geben Sie ein Startort ein: ', (ans2) => {
-          channel.publish(exchange, '', Buffer.from(ans2));
-        })
+    /*    rl.question('Bitte geben Sie ein Startort ein: ', (ans2) => {
+          channel.publish(exchange, '', Buffer.from(ans2));*/
+        
     /*    rl.question('Geben Sie ein Verkehrsmittel ein: '  , (ans3) => {
-          channel.publish(exchange, '', Buffer.from(ans));
+          channel.publish(exchange, '', Buffer.from(ans3));
         })*/
-
+        
 
         rl.question('Bitte geben Sie ein Zielort ein: ', (ans) => {
-          channel.publish(exchange, '', Buffer.from(ans));
-          /*
-          rl.question('Möchten Sie die Wetterdaten für Ihr Zielort haben? (y/n): ', (type) => {
-            getWeather(type, ans, channel)
-          });
-          rl.question('Möchten Sie die Verkehrsinfos anzeigen lassen? (y/n): ', (type2) => {            
-            getMap(type2, ans, ans2 ,channel)
-          });         */ 
-        
+          rl.question('Bitte geben Sie ein Startort ein: ', (ans2) => {
+              channel.publish(exchange, '', Buffer.from(ans));
+
           rl.question('Bitte geben Sie [weather] für Wetterdaten oder [traffic] für Verkehrsinfos ein: ', (type) => {
             if(type === 'weather'){
               getWeather(type, ans, channel)
-            }else if(type === 'traffic'){                  
-              getMap(type, ans, channel)
+            }else if(type === 'traffic'){ 
+              rl.question('Geben Sie ein Verkehrsmittel ein: '  , (ans3) => {                 
+              getMap(type, ans, ans2, channel)
+              })
             }else{
               console.log('');
               console.log('Ungültige Eingabe! Bitte versuchen Sie es erneut.');
@@ -58,17 +54,19 @@ amqp.connect('amqp://urqhfjsh:De4vJ6bu15evWfugZUfdgi2nxrVvUSun@kangaroo.rmq.clou
               process.exit();
             }
           }); 
-       });        
+       });       
+    })
       });
 });
 
 
-function getMap(type, ans, channel){
+
+function getMap(type, ans, ans2, channel){
   var exchange3 = 'data_combine';
   //if(type2 === 'y')
   //{
     console.log('Jetzt kommen die Verkehrsinfos: ');
-    console.log('Ihre Route: nach ' + ans );
+    console.log('Ihre Route: ' + ans2 + ' nach ' + ans );
    
     channel.assertExchange(exchange3, 'topic', {
       durable: false
@@ -165,4 +163,3 @@ function getWeather(type, ans, channel){
       process.exit();
     }
 }
-

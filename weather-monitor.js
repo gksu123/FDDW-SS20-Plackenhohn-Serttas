@@ -83,12 +83,14 @@ function sendWeather() {
                 channel.publish(exchange, ans, Buffer.from(text));
                 console.log("[#] Sent weather data for " + ans );
                 console.log("");
+
+              //  process.exit();
               })
             }
           }
         }
         getWeather()
-      }, 6000)
+      }, 10000)
       
       channel.assertQueue('', {
         exclusive:true
@@ -103,7 +105,7 @@ function sendWeather() {
           channel.consume(q.queue, function(msg) {
             console.log("[x] Get");
   
-            senddata(msg.fields.routingKey, msg.content.toString(), channel, exchange1)
+            sendData(msg.fields.routingKey, msg.content.toString(), channel, exchange1)
           },{
             noAck: true
           });
@@ -111,7 +113,7 @@ function sendWeather() {
   })
 })
 
-    function senddata(key, content, channel, exchange){
+    function sendData(key, content, channel, exchange){
       channel.publish(exchange, key, Buffer.from(content));
       console.log("[x] Sent");
       console.log("");

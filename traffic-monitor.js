@@ -30,6 +30,7 @@ opencage.geocode({p : ans}).then(data => {
   });
 */
 
+let str
 let city = []
 getcity()
 sendTraffic()
@@ -44,9 +45,10 @@ function getcity() {
         if (error1) {
           throw error1;
         }
-        var exchange = 'city';
+    //    var exchange = 'city';
+    var exchange = 'traffic-monitor';
 
-        channel.assertExchange(exchange, 'fanout' , {
+        channel.assertExchange(exchange, 'topic' , {
           durable: false
         });
 
@@ -57,11 +59,13 @@ function getcity() {
             throw error2;
           }
 
-          channel.bindQueue(q.queue, exchange, 'traffic-monitor');
+          channel.bindQueue(q.queue, exchange, '');
 
           channel.consume(q.queue, function(msg) {
             if (msg.content) {
-              city.push(msg.content.toString())
+              str = msg.content.toString().split(",")
+              console.log(str)
+              city.push(str[1])
             }
           },{
             noAck: true
@@ -98,12 +102,11 @@ function sendTraffic() {
           }
           else{
             console.log('')
+            let ans3 = str[2];
             for(ans of city) {
 //            await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${ans1}&key=e54dae4da22b4a3696e10c720de2b3f8&language=de&pretty=1`, {
-            await fetch('https://graphhopper.com/api/1/route?point=50.9395,6.977547&point=50.938811,7.008111&vehicle=car&locale=de&calc_points=true&key=061864de-5ff2-43a3-abbd-a26d08e0284c', {
+            await fetch(`https://graphhopper.com/api/1/route?point=50.9395,6.977547&point=50.938811,7.008111&vehicle=${ans3}&locale=de&calc_points=true&key=061864de-5ff2-43a3-abbd-a26d08e0284c`)
     //      await fetch('https://graphhopper.com/api/1/route?point=50.56,6.57&point=50.44,7.60&vehicle=car&locale=de&calc_points=true&key=061864de-5ff2-43a3-abbd-a26d08e0284c', {
-
-              'method' : 'GET' , })
               .then(data => {
                 return data.text()
               })

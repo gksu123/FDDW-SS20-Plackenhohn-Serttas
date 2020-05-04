@@ -62,9 +62,15 @@ function sendWeather() {
       });
 
       let exchange1='data_combine';
-      channel.assertExchange(exchange, 'topic', {
+      channel.assertExchange(exchange1, 'topic', {
         durable : false
       });
+
+ /*     function convertToCelsius(fahrenheit){
+          return ((fahrenheit-32)*5/9);
+      }*/
+      
+      let currentTemp = 0.0; 
 
       setInterval(() => {
         async function getWeather() {
@@ -74,16 +80,24 @@ function sendWeather() {
           else{
             console.log('')
             for(ans of city) {
-            await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${ans}&units=imperial&appid=09d42d940cc979f914409599ef6b7251`, {
-              'method' : 'GET' , })
+            await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${ans}&units=metric&appid=09d42d940cc979f914409599ef6b7251`)
               .then(data => {
-                return data.text()
+                return data.json()
               })
-              .then(text => {
-                channel.publish(exchange, ans, Buffer.from(text));
-                console.log("[#] Sent weather data for " + ans );
+              .then(out => {
+        //        channel.publish(exchange, ans, Buffer.from(out));
+                let newTemp = out.main.temp
+                if(newTemp != currentTemp){
+                    currentTemp = newTemp
+                    console.log('Neue Temperatur: ' + currentTemp + ' Grad ')
+                    channel.publish(exchange, ans, Buffer.from(currentTemp.toString()));
+                }
+                else {
+                    console.log('Wait...')
+                } 
+                
+        //        console.log("[#] Sent weather data for " + ans );
                 console.log("");
-
               //  process.exit();
               })
             }

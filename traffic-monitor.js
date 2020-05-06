@@ -30,7 +30,7 @@ opencage.geocode({p : ans}).then(data => {
   });
 */
 
-let str
+//let str
 let city = []
 getcity()
 sendTraffic()
@@ -45,10 +45,10 @@ function getcity() {
         if (error1) {
           throw error1;
         }
-    //    var exchange = 'city';
-    var exchange = 'traffic-monitor';
+        var exchange = 'city';
+//    var exchange = 'traffic-monitor';
 
-        channel.assertExchange(exchange, 'topic' , {
+        channel.assertExchange(exchange, 'fanout' , {
           durable: false
         });
 
@@ -59,13 +59,14 @@ function getcity() {
             throw error2;
           }
 
-          channel.bindQueue(q.queue, exchange, '');
+          channel.bindQueue(q.queue, exchange, 'traffic-monitor');
 
           channel.consume(q.queue, function(msg) {
+          //  console.log(msg.content)
             if (msg.content) {
-              str = msg.content.toString().split(",")
-              console.log(str)
-              city.push(str[1])
+          //    str = msg.content.toString().split(",")
+          //    city.push(str[1])
+              city.push(msg.content.toString())
             }
           },{
             noAck: true
@@ -102,17 +103,18 @@ function sendTraffic() {
           }
           else{
             console.log('')
-            let ans3 = str[2];
+        //    let ans3 = str[2];
             for(ans of city) {
-//            await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${ans1}&key=e54dae4da22b4a3696e10c720de2b3f8&language=de&pretty=1`, {
-            await fetch(`https://graphhopper.com/api/1/route?point=50.9395,6.977547&point=50.938811,7.008111&vehicle=${ans3}&locale=de&calc_points=true&key=061864de-5ff2-43a3-abbd-a26d08e0284c`)
-    //      await fetch('https://graphhopper.com/api/1/route?point=50.56,6.57&point=50.44,7.60&vehicle=car&locale=de&calc_points=true&key=061864de-5ff2-43a3-abbd-a26d08e0284c', {
+    //          await fetch(`https://graphhopper.com/api/1/route?point=50.9395,6.977547&point=50.938811,7.008111&vehicle=${ans3}&locale=de&calc_points=true&key=061864de-5ff2-43a3-abbd-a26d08e0284c`)
+              await fetch(`https://graphhopper.com/api/1/route?point=52.3127,13.2437&point=50.44,7.6&vehicle=car&locale=de&calc_points=true&key=061864de-5ff2-43a3-abbd-a26d08e0284c`)
               .then(data => {
-                return data.text()
+                return data.json()
               })
-              .then(text => {
-                channel.publish(exchange, ans, Buffer.from(text));
+              .then(out => {
                 console.log("[#] Sent traffic data for " + ans);
+                console.log(out.paths[0].distance/1000 + ' km')
+                channel.publish(exchange, ans, Buffer.from((out.paths[0].distance/1000).toString()));
+               
                 console.log("");
 
               //  process.exit();
@@ -134,6 +136,7 @@ function sendTraffic() {
         channel.bindQueue(q.queue, exchange, '#');
   
           channel.consume(q.queue, function(msg) {
+      //      console.log(msg)
             console.log("[x] Get");
   
             sendData(msg.fields.routingKey, msg.content.toString(), channel, exchange1)

@@ -86,19 +86,35 @@ function getMap(ans, ans2, ans3, channel){
   //        console.log(" [x] current traffic news in %s: '%s'", msg.fields.routingKey, msg.content.toString())
           console.log(" [x] current distance is: '%s'", msg.content.toString() + ' km')
 
-          //DISCORD
           client.login(token)
 
-          client.on('ready', () => {
-              console.log('Bot ist online!')
-          });
-
+           client.on('ready', () => {
+               console.log('Bot ist online!')
+           });
+ 
           client.on("message", function(message) {
             if(message.content === 'subscribe' || message.content === 'abonnieren' || message.content === 'channel'){
-              message.channel.send('Es wurden folgende Daten abgefragt: ' + msg.fields.routingKey)
-              message.channel.send('Entfernung: ' + msg.content.toString() + ' km')
-              .catch(console.error);
+                message.channel.send('Bitte gib eine Startort ein: '  )
             }
+            else if(message.content === 'bonn' ) {
+                message.channel.send('Bitte gib ein Zielort ein: ')
+            }
+            else if(message.content === 'berlin') {
+                message.channel.send('Bitte geben Sie [weather] für Wetterdaten oder [traffic] für Verkehrsinfos ein: ')
+            }
+         
+           /*           if(message.content === 'weather'){
+                          message.channel.send('Es wurden folgende Daten abgefragt: ')
+                      }*/
+            else if (message.content === 'traffic'){
+                message.channel.send('Geben Sie die Verkehrsmittel ein: ')
+            }
+         
+            else if(message.content ==='car'){
+                            message.channel.send('Es wurden folgende Daten abgefragt: ' + msg.fields.routingKey )
+                            message.channel.send('Entfernung: '+ msg.content.toString()+' km')
+                             .catch(console.error);
+                         }
           });
       }, {
           noAck: true
@@ -162,12 +178,4 @@ function getWeather(ans, channel){
       });
     });
 
-/*  }else if(type2 === 'n'){
-    rl.close();
-    process.exit();*/
-/*  }else{
-//      console.log("Keine gültige eingabe!");
-      rl.close();
-      process.exit();
-    }*/
 }

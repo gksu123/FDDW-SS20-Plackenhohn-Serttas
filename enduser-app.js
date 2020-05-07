@@ -9,10 +9,8 @@ const rl = readline.createInterface({
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const token = 'NzA2MTc5MDMxNzkxNDM1ODQ4.XrAzNA.OZbE_*********';
+const token = 'NzA2MTc5MDMxNzkxNDM1ODQ4.XrAzNA.OZbE_rDwX-CY2vUkgN309s489wQ';
 // token Ende rDwX-CY2vUkgN309s489wQ
-
-let str
 
 amqp.connect('amqp://urqhfjsh:De4vJ6bu15evWfugZUfdgi2nxrVvUSun@kangaroo.rmq.cloudamqp.com/urqhfjsh', function(error0, connection) {
     if (error0) {
@@ -30,13 +28,15 @@ amqp.connect('amqp://urqhfjsh:De4vJ6bu15evWfugZUfdgi2nxrVvUSun@kangaroo.rmq.clou
 
         rl.question('Bitte geben Sie ein Startort ein: ', (ans2) => {
           rl.question('Bitte geben Sie ein Zielort ein: ', (ans) => {
-              channel.publish(exchange, ans, Buffer.from(ans));
+        //      channel.publish(exchange, ans, Buffer.from(ans));
 
           rl.question('Bitte geben Sie [weather] für Wetterdaten oder [traffic] für Verkehrsinfos ein: ', (type) => {
             if(type === 'weather'){
+              channel.publish(exchange, ans, Buffer.from(ans));
               getWeather(ans, channel)
             }else if(type === 'traffic'){ 
-              rl.question('Geben Sie ein Verkehrsmittel ein: '  , (ans3) => {                 
+              rl.question('Geben Sie ein Verkehrsmittel ein: '  , (ans3) => {
+              channel.publish(exchange, ans, Buffer.from(ans));                 
               getMap(ans, ans2, ans3, channel)
               })
             }else{
@@ -84,7 +84,8 @@ function getMap(ans, ans2, ans3, channel){
           console.log('')
           console.log(` [x] destination: from ${ans2} to ${ans} by ${ans3}`);
   //        console.log(" [x] current traffic news in %s: '%s'", msg.fields.routingKey, msg.content.toString())
-          console.log(" [x] current distance is: '%s'", msg.content.toString() + ' km')
+    //      console.log(" [x] current distance is: '%s'", msg.content.toString() + ' km')
+          console.log(" [x] current time is: '%s'", msg.content.toString() + ' h')
 
           //DISCORD
           client.login(token)

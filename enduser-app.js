@@ -9,7 +9,7 @@ const rl = readline.createInterface({
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const token = 'NzA2MTc5MDMxNzkxNDM1ODQ4.XrPzcw.GHtRwSy-sKcleTrcMtCL6PJcp_o';
+const token = 'NzA2MTc5MDMxNzkxNDM1ODQ4.XrPzcw.GHtRwSy-******';
 // token Ende sKcleTrcMtCL6PJcp_o
 
 amqp.connect('amqp://urqhfjsh:De4vJ6bu15evWfugZUfdgi2nxrVvUSun@kangaroo.rmq.cloudamqp.com/urqhfjsh', function(error0, connection) {

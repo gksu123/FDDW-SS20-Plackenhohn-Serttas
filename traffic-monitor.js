@@ -30,7 +30,7 @@ opencage.geocode({p : ans}).then(data => {
   });
 */
 
-//let str
+let str
 let city = []
 getcity()
 sendTraffic()
@@ -108,11 +108,7 @@ function sendTraffic() {
             let ans3 = str[2];
             for(ans of city) {
     //          await fetch(`https://graphhopper.com/api/1/route?point=50.9395,6.977547&point=50.938811,7.008111&vehicle=${ans3}&locale=de&calc_points=true&key=061864de-5ff2-43a3-abbd-a26d08e0284c`)
-<<<<<<< HEAD
                 await fetch(`https://graphhopper.com/api/1/route?point=52.3127,13.2437&point=50.44,7.6&vehicle=${ans3}&locale=de&calc_points=true&key=061864de-5ff2-43a3-abbd-a26d08e0284c`)
-=======
-                await fetch(`https://graphhopper.com/api/1/route?point=52.3127,13.2437&point=50.44,7.6&vehicle=car&locale=de&calc_points=true&key=061864de-5ff2-43a3-abbd-a26d08e0284c`)
->>>>>>> 70684fc0230c877713f3d765057fe85ec4e27b28
               .then(data => {
                 return data.json()
               })
@@ -124,7 +120,7 @@ function sendTraffic() {
                   console.log(out.paths[0].distance/1000 + ' km')
                   console.log(out.paths[0].time/(1000*60*60) + ' h')
           //      channel.publish(exchange, ans, Buffer.from((out.paths[0].distance/1000).toString()));
-                channel.publish(exchange, ans, Buffer.from((out.paths[0].time/(1000*60*60)).toString()));
+                channel.publish(exchange, ans, Buffer.from((out.paths[0].time/(1000*60*60)).toFixed(3).toString()));
               }
               else {
                   console.log('Wait...')

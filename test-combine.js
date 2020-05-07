@@ -9,8 +9,18 @@ const rl = readline.createInterface({
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const token = 'NzA2MTc5MDMxNzkxNDM1ODQ4.XrPzcw.GHtRwSy-******';
-// token Ende sKcleTrcMtCL6PJcp_o
+const token = 'NzA2MTc5MDMxNzkxNDM1ODQ4.XrQGDw.sKF2YRmtqmQtiDVYE-*****';
+// token Ende jl6iNTEO4
+
+
+/*
+*
+*
+* DIES IST EINE TESTDATEI // IN DER DATEI KANN MAN DIE EINGABE ÜBER DISCORD MACHEN
+*
+*
+*/
+
 
 let str
 
@@ -30,13 +40,15 @@ amqp.connect('amqp://urqhfjsh:De4vJ6bu15evWfugZUfdgi2nxrVvUSun@kangaroo.rmq.clou
 
         rl.question('Bitte geben Sie ein Startort ein: ', (ans2) => {
           rl.question('Bitte geben Sie ein Zielort ein: ', (ans) => {
-              channel.publish(exchange, ans, Buffer.from(ans));
+         //     channel.publish(exchange, ans, Buffer.from(ans));
 
           rl.question('Bitte geben Sie [weather] für Wetterdaten oder [traffic] für Verkehrsinfos ein: ', (type) => {
             if(type === 'weather'){
+              channel.publish(exchange, ans, Buffer.from(ans));
               getWeather(ans, channel)
             }else if(type === 'traffic'){ 
-              rl.question('Geben Sie ein Verkehrsmittel ein: '  , (ans3) => {                 
+              rl.question('Geben Sie ein Verkehrsmittel ein: '  , (ans3) => {   
+              channel.publish(exchange, ans, Buffer.from(`${ans2},${ans},${ans3}`))              
               getMap(ans, ans2, ans3, channel)
               })
             }else{

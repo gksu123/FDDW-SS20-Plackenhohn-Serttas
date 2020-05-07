@@ -90,7 +90,7 @@ function sendWeather() {
                 if(newTemp != currentTemp){
                     currentTemp = newTemp
                     console.log('Neue Temperatur: ' + currentTemp + ' Grad ')
-                    channel.publish(exchange, ans, Buffer.from(currentTemp.toString()));
+                    channel.publish(exchange, ans, Buffer.from(currentTemp.toFixed(3).toString()));
                 }
                 else {
                     console.log('Wait...')

@@ -9,8 +9,13 @@ const rl = readline.createInterface({
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
+<<<<<<< HEAD
 const token = 'NzA2MTc5MDMxNzkxNDM1ODQ4.XrPzcw.GHtRwSy-******';
 // token Ende sKcleTrcMtCL6PJcp_o
+=======
+const token = 'NzA2MTc5MDMxNzkxNDM1ODQ4.XrAzNA.OZbE_rDwX-CY2vUkgN309s489wQ';
+// token Ende rDwX-CY2vUkgN309s489wQ
+>>>>>>> 70684fc0230c877713f3d765057fe85ec4e27b28
 
 amqp.connect('amqp://urqhfjsh:De4vJ6bu15evWfugZUfdgi2nxrVvUSun@kangaroo.rmq.cloudamqp.com/urqhfjsh', function(error0, connection) {
     if (error0) {
@@ -36,8 +41,12 @@ amqp.connect('amqp://urqhfjsh:De4vJ6bu15evWfugZUfdgi2nxrVvUSun@kangaroo.rmq.clou
               getWeather(ans, channel)
             }else if(type === 'traffic'){ 
               rl.question('Geben Sie ein Verkehrsmittel ein: '  , (ans3) => {
+<<<<<<< HEAD
         //      channel.publish(exchange, ans, Buffer.from(ans));    
               channel.publish(exchange, ans, Buffer.from(`${ans2},${ans},${ans3}`))
+=======
+              channel.publish(exchange, ans, Buffer.from(ans));                 
+>>>>>>> 70684fc0230c877713f3d765057fe85ec4e27b28
               getMap(ans, ans2, ans3, channel)
               })
             }else{

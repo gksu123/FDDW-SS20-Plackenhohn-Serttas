@@ -9,8 +9,8 @@ const rl = readline.createInterface({
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const token = 'NzA2MTc5MDMxNzkxNDM1ODQ4.XrAzNA.OZbE_*********';
-// token Ende rDwX-CY2vUkgN309s489wQ
+const token = 'NzA2MTc5MDMxNzkxNDM1ODQ4.XrPzcw.GHtRwSy-******';
+// token Ende sKcleTrcMtCL6PJcp_o
 
 let str
 
@@ -93,11 +93,13 @@ function getMap(ans, ans2, ans3, channel){
            });
  
           client.on("message", function(message) {
+       //     var messageArray = message.split(' ')
             if(message.content === 'subscribe' || message.content === 'abonnieren' || message.content === 'channel'){
-                message.channel.send('Bitte gib eine Startort ein: '  )
+               message.channel.send('Bitte gib eine Startort ein: '  )
             }
             else if(message.content === 'bonn' ) {
                 message.channel.send('Bitte gib ein Zielort ein: ')
+       //         channel.publish(exchange, ans, Buffer.from(ans));
             }
             else if(message.content === 'berlin') {
                 message.channel.send('Bitte geben Sie [weather] für Wetterdaten oder [traffic] für Verkehrsinfos ein: ')
@@ -112,7 +114,8 @@ function getMap(ans, ans2, ans3, channel){
          
             else if(message.content ==='car'){
                             message.channel.send('Es wurden folgende Daten abgefragt: ' + msg.fields.routingKey )
-                            message.channel.send('Entfernung: '+ msg.content.toString()+' km')
+                   //         message.channel.send('Entfernung: '+ msg.content.toString()+' km')
+                            message.channel.send('Zeit: '+ msg.content.toString()+' Stunden')
                              .catch(console.error);
                          }
           });

@@ -61,8 +61,8 @@ function sendWeather() {
         durable: false
       });
 
-      let exchange1='data_combine';
-      channel.assertExchange(exchange1, 'topic', {
+      let exchange1='weather-monitor';  //combine
+      channel.assertExchange(exchange, 'topic', {
         durable : false
       });
 

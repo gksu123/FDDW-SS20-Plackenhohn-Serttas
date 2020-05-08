@@ -9,7 +9,7 @@ const rl = readline.createInterface({
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const token = 'NzA2MTc5MDMxNzkxNDM1ODQ4.XrQGDw.sKF2YRmtqmQtiDVYE-*****';
+const token = 'NzA2MTc5MDMxNzkxNDM1ODQ4.XrQGDw.sKF2YRmtqmQtiDVYE-jl6iNTEO4';
 // token Ende jl6iNTEO4
 
 

@@ -96,59 +96,44 @@ function getMap(ans, ans2, ans3, channel){
           console.log('')
           console.log(` [x] destination: from ${ans2} to ${ans} by ${ans3}`);
   //        console.log(" [x] current traffic news in %s: '%s'", msg.fields.routingKey, msg.content.toString())
-          console.log(" [x] current distance is: '%s'", msg.content.toString() + ' km')
+          console.log(" [x] current time is: '%s'", msg.content.toString() + ' h')
 
+          //DISCORD
           client.login(token)
 
            client.on('ready', () => {
                console.log('Bot ist online!')
            });
- 
+
           client.on("message", function(message) {
-       //     var messageArray = message.split(' ')
-            if(message.content === 'subscribe' || message.content === 'abonnieren' || message.content === 'channel'){
-               message.channel.send('Bitte gib eine Startort ein: '  )
-            }
-            else if(message.content === 'bonn' ) {
-                message.channel.send('Bitte gib ein Zielort ein: ')
-       //         channel.publish(exchange, ans, Buffer.from(ans));
-            }
-            else if(message.content === 'berlin') {
-                message.channel.send('Bitte geben Sie [weather] für Wetterdaten oder [traffic] für Verkehrsinfos ein: ')
-            }
-         
-           /*           if(message.content === 'weather'){
-                          message.channel.send('Es wurden folgende Daten abgefragt: ')
-                      }*/
-            else if (message.content === 'traffic'){
-                message.channel.send('Geben Sie die Verkehrsmittel ein: ')
-            }
-         
-            else if(message.content ==='car'){
-                            message.channel.send('Es wurden folgende Daten abgefragt: ' + msg.fields.routingKey )
-                   //         message.channel.send('Entfernung: '+ msg.content.toString()+' km')
-                            message.channel.send('Zeit: '+ msg.content.toString()+' Stunden')
-                             .catch(console.error);
-                         }
+            var msgArray = message.toString().split(' ')
+            msgArray[0] = '/subscribe'
+        //    if(msgArray[0] === '/subscribe' || msgArray[0] === '/abonnieren' || msgArray[0] === '/channel'){
+              const daten = {
+                Startort: msgArray[1],
+                Zielort: msgArray[2],
+                Vmittel: msgArray[3]
+              };
+        //      console.log(daten)
+        //      console.log(msg.content.toString())
+
+        //  if (message.content === (msgArray[0] + daten.Startort + daten.Zielort + daten.Vmittel)){
+              if(msgArray[0] + daten){
+                    message.channel.send('Es wurden folgende Daten abgefragt: ' + msg.fields.routingKey )
+                    message.channel.send('Zeit: '+ msg.content.toString()+' h')
+                    .catch(console.error);
+              }
           });
       }, {
           noAck: true
       });
     });
-/*  }else if(type2 === 'n'){
-    rl.close();
-    process.exit();*/
-//  }else{
-  //    console.log("Keine gültige eingabe!");
-//      rl.close();
-//      process.exit();
-//    }
-}
+  }
 
+  
 function getWeather(ans, channel){
   var exchange1 = 'weather-monitor';
-//  if(type == 'weather')
-//  {
+
     console.log('');
     console.log('Jetzt kommen die Wetterdaten');
     console.log('Sie haben ausgewählt: ' + ans);
@@ -176,21 +161,29 @@ function getWeather(ans, channel){
           //DISCORD
           client.login(token)
 
-          client.on('ready', () => {
-              console.log('Bot ist online!')
-          });
+           client.on('ready', () => {
+               console.log('Bot ist online!')
+           });
 
           client.on("message", function(message) {
-            if(message.content === 'subscribe' || message.content === 'abonnieren' || message.content === 'channel'){
-              message.channel.send('Es wurden folgende Daten abgefragt: ' + msg.fields.routingKey )
-              message.channel.send('Wetter aktuell: '+msg.content.toString()+'°C')
-              .catch(console.error);
-            }
+            var msgArray = message.toString().split(' ')
+            msgArray[0] = '/subscribe'
+
+              const daten = {
+                Startort: msgArray[1],
+                Zielort: msgArray[2],
+                Vmittel: msgArray[3]
+              };
+
+              if(msgArray[0] + daten){
+                    message.channel.send('Es wurden folgende Daten abgefragt: ' + msg.fields.routingKey )
+                    message.channel.send('Wetter aktuell: '+ msg.content.toString() + '°C')
+                    .catch(console.error);
+              }
           });
 
       }, {
           noAck: true
       });
     });
-
-}
+  }
